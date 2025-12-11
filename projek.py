@@ -186,6 +186,7 @@ def signup_konsumen():
     print("SIGN UP sebagai customer\n")
 
 #USERNAME
+
     while True:
         username = ''
         username = kekosongan(username, 'username')
@@ -1691,8 +1692,15 @@ def edit_profile(role):
                     usernamebaru = kekosongan(usernamebaru, "username")
                     if usernamebaru == '0':
                         break
-                    mycursor.execute(f"UPDATE {role} SET username = '{usernamebaru}' where id_{role} = {pkUser_recent}")
-                    conn.commit()
+                    mycursor.execute(f"SELECT username from {role} where username = '{usernamebaru}'")
+                    cekusername = mycursor.fetchone()
+                    if cekusername != None:
+                        print("Username telah digunakan!")
+                        continue
+                    elif cekusername == None:
+                        mycursor.execute(f"UPDATE {role} SET username = '{usernamebaru}' where id_{role} = {pkUser_recent}")
+                        print("Data berhasil diupdate!")
+                        conn.commit()
                     break
                 except Exception as e:
                     input("Terjadi kesalahan atau username telah digunakan. Coba lagi...")
